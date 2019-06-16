@@ -59,13 +59,6 @@
     <string-array name="config_vendorPlatformSignatures">
     </string-array>
 
-    <!-- Default value for proximity check on screen wakez
-         NOTE ! - Enable for devices that have a fast response proximity sensor (ideally < 300ms)
-    -->
-    <bool name="config_proximityCheckOnWake">false</bool>
-    <integer name="config_proximityCheckTimeout">250</integer>
-    <bool name="config_proximityCheckOnWakeEnabledByDefault">false</bool>
-
     <!-- Is the battery LED intrusive? Used to decide if there should be a disable option -->
     <bool name="config_intrusiveBatteryLed">true</bool>
 
@@ -193,4 +186,8 @@
 
     <!-- Value for overriding outdoor capable mode for LiveDisplay tile -->
     <bool name="config_outdoorCapable">false</bool>
+
+    <!-- Defines the sysfs attribute path used by pocket bridge
+    to communicate pocket state to the pocket judge kernel driver. -->
+    <string translatable="false" name="config_pocketBridgeSysfsInpocket"></string>
 </resources>

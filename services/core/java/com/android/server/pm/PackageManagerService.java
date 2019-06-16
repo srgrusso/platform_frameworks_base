@@ -476,6 +476,7 @@ public class PackageManagerService extends IPackageManager.Stub
     static final int SCAN_AS_OEM = 1<<19;
     static final int SCAN_AS_VENDOR = 1<<20;
     static final int SCAN_AS_PRODUCT = 1<<21;
+    static final int SCAN_AS_THEME = 1<<22;
 
     @IntDef(flag = true, prefix = { "SCAN_" }, value = {
             SCAN_NO_DEX,
@@ -581,6 +582,10 @@ public class PackageManagerService extends IPackageManager.Stub
     private static final String VENDOR_OVERLAY_DIR = "/vendor/overlay";
 
     private static final String PRODUCT_OVERLAY_DIR = "/product/overlay";
+
+    private static final String SYSTEM_OVERLAY_DIR = "/system/overlay";
+
+    private static final String THEME_OVERLAY_DIR = "/data/system/theme";
 
     /** Canonical intent used to identify what counts as a "web browser" app */
     private static final Intent sBrowserIntent;
@@ -2631,6 +2636,21 @@ public class PackageManagerService extends IPackageManager.Stub
                     | SCAN_AS_SYSTEM
                     | SCAN_AS_PRODUCT,
                     0);
+            scanDirTracedLI(new File(SYSTEM_OVERLAY_DIR),
+                    mDefParseFlags
+                    | PackageParser.PARSE_IS_SYSTEM_DIR,
+                    scanFlags
+                    | SCAN_AS_SYSTEM,
+                    0);
+            scanDirTracedLI(new File(THEME_OVERLAY_DIR),
+                    mDefParseFlags
+                    | PackageParser.PARSE_IS_SYSTEM_DIR,
+                    scanFlags
+                    | SCAN_AS_SYSTEM
+                    | SCAN_AS_PRODUCT
+                    | SCAN_AS_THEME,
+                    0);
+
 
             mParallelPackageParserCallback.findStaticOverlayPackages();
 
@@ -11352,16 +11372,26 @@ public class PackageManagerService extends IPackageManager.Stub
                     }
 
                     // The only case where we allow installation of a non-system overlay is when
-                    // its signature is signed with the platform certificate.
-                    PackageSetting platformPkgSetting = mSettings.getPackageLPr("android");
-                    if ((platformPkgSetting.signatures.mSigningDetails
-                            != PackageParser.SigningDetails.UNKNOWN)
-                            && (compareSignatures(
-                                    platformPkgSetting.signatures.mSigningDetails.signatures,
-                                    pkg.mSigningDetails.signatures)
-                                            != PackageManager.SIGNATURE_MATCH)) {
+                    // its signature is signed with a whitelisted OEM theme system certificate.
+                    ArraySet<String> wlSigApps =
+                            SystemConfig.getInstance().getThemeSystemSignatureWhitelistedApps();
+                    boolean sigAllowed = false;
+                    for (String pkgName : wlSigApps) {
+                        PackageSetting platformPkgSetting = mSettings.getPackageLPr(pkgName);
+                        sigAllowed = (platformPkgSetting.signatures.mSigningDetails
+                                != PackageParser.SigningDetails.UNKNOWN)
+                                && (compareSignatures(
+                                        platformPkgSetting.signatures.mSigningDetails.signatures,
+                                        pkg.mSigningDetails.signatures)
+                                                == PackageManager.SIGNATURE_MATCH);
+                        if (sigAllowed) {
+                            break;
+                        }
+                    }
+
+                    if (!sigAllowed) {
                         throw new PackageManagerException("Overlay " + pkg.packageName +
-                                " must be signed with the platform certificate.");
+                                " must be signed with a whitelisted OEM theme system certificate.");
                     }
                 }
             }
@@ -18289,6 +18319,12 @@ public class PackageManagerService extends IPackageManager.Stub
     @Override
     public boolean isPackageDeviceAdminOnAnyUser(String packageName) {
         final int callingUid = Binder.getCallingUid();
+        if (checkUidPermission(android.Manifest.permission.MANAGE_USERS, callingUid)
+                != PERMISSION_GRANTED) {
+            EventLog.writeEvent(0x534e4554, "128599183", -1, "");
+            throw new SecurityException(android.Manifest.permission.MANAGE_USERS
+                    + " permission is required to call this API");
+        }
         if (getInstantAppPackageName(callingUid) != null
                 && !isCallerSameApp(packageName, callingUid)) {
             return false;

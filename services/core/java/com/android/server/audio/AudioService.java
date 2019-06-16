@@ -298,6 +298,7 @@ public class AudioService extends IAudioService.Stub
 
     /* Sound effect file names  */
     private static final String SOUND_EFFECTS_PATH = "/media/audio/ui/";
+    private static final String SOUND_EFFECTS_THEMED_PATH = "/data/system/theme/audio/ui/";
     private static final List<String> SOUND_EFFECT_FILES = new ArrayList<String>();
 
     /* Sound effect file name mapping sound effect id (AudioManager.FX_xxx) to
@@ -596,7 +597,6 @@ public class AudioService extends IAudioService.Stub
     // Devices for which the volume is fixed and VolumePanel slider should be disabled
     int mFixedVolumeDevices = AudioSystem.DEVICE_OUT_HDMI |
             AudioSystem.DEVICE_OUT_DGTL_DOCK_HEADSET |
-            AudioSystem.DEVICE_OUT_ANLG_DOCK_HEADSET |
             AudioSystem.DEVICE_OUT_HDMI_ARC |
             AudioSystem.DEVICE_OUT_SPDIF |
             AudioSystem.DEVICE_OUT_AUX_LINE;
@@ -5455,11 +5455,15 @@ public class AudioService extends IAudioService.Stub
         }
 
         private String getSoundEffectFilePath(int effectType) {
-            String filePath = Environment.getProductDirectory() + SOUND_EFFECTS_PATH
-                    + SOUND_EFFECT_FILES.get(SOUND_EFFECT_FILES_MAP[effectType][0]);
+            String filePath = SOUND_EFFECTS_THEMED_PATH +
+                SOUND_EFFECT_FILES.get(SOUND_EFFECT_FILES_MAP[effectType][0]);
             if (!new File(filePath).isFile()) {
-                filePath = Environment.getRootDirectory() + SOUND_EFFECTS_PATH
+               filePath = Environment.getProductDirectory() + SOUND_EFFECTS_PATH
                         + SOUND_EFFECT_FILES.get(SOUND_EFFECT_FILES_MAP[effectType][0]);
+                if (!new File(filePath).isFile()) {
+                    filePath = Environment.getRootDirectory() + SOUND_EFFECTS_PATH
+                            + SOUND_EFFECT_FILES.get(SOUND_EFFECT_FILES_MAP[effectType][0]);
+                }
             }
             return filePath;
         }

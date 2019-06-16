@@ -41,6 +41,7 @@ import android.os.ServiceManager;
 import android.os.ServiceSpecificException;
 import android.os.SystemProperties;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.ArrayMap;
 import android.util.Log;
 
@@ -914,27 +915,17 @@ public final class CameraManager {
 
                 boolean exposeAuxCamera = true;
                 String packageName = ActivityThread.currentOpPackageName();
-                String packageList = SystemProperties.get("vendor.camera.aux.packagelist");
-                String packageBlacklist = SystemProperties.get("vendor.camera.aux.packageblacklist");
-                if (packageList.length() > 0) {
-                    TextUtils.StringSplitter splitter = new TextUtils.SimpleStringSplitter(',');
-                    splitter.setString(packageList);
+                String packageList = SystemProperties.get("vendor.camera.aux.packagelist", "");
+                String packageBlacklist = SystemProperties.get("vendor.camera.aux.packageblacklist", "");
+                if (!packageList.isEmpty()) {
                     exposeAuxCamera = false;
-                    for (String str : splitter) {
-                        if (packageName.equals(str)) {
-                            exposeAuxCamera = true;
-                            break;
-                        }
+                    if (Arrays.asList(packageList.split(",")).contains(packageName)) {
+                        exposeAuxCamera = true;
                     }
-                } else if (packageBlacklist.length() > 0) {
-                    TextUtils.StringSplitter splitter = new TextUtils.SimpleStringSplitter(',');
-                    splitter.setString(packageBlacklist);
+                } else if (!packageBlacklist.isEmpty()) {
                     exposeAuxCamera = true;
-                    for (String str : splitter) {
-                        if (packageName.equals(str)) {
-                            exposeAuxCamera = false;
-                            break;
-                        }
+                    if (Arrays.asList(packageBlacklist.split(",")).contains(packageName)) {
+                        exposeAuxCamera = false;
                     }
                 }
                 int idCount = 0;
@@ -1155,27 +1146,17 @@ public final class CameraManager {
              */
             boolean exposeMonoCamera = true;
             String packageName = ActivityThread.currentOpPackageName();
-            String packageList = SystemProperties.get("vendor.camera.aux.packagelist");
-            String packageBlacklist = SystemProperties.get("vendor.camera.aux.packageblacklist");
-            if (packageList.length() > 0) {
-                TextUtils.StringSplitter splitter = new TextUtils.SimpleStringSplitter(',');
-                splitter.setString(packageList);
+            String packageList = SystemProperties.get("vendor.camera.aux.packagelist", "");
+            String packageBlacklist = SystemProperties.get("vendor.camera.aux.packageblacklist", "");
+            if (!packageList.isEmpty()) {
                 exposeMonoCamera = false;
-                for (String str : splitter) {
-                    if (packageName.equals(str)) {
-                        exposeMonoCamera = true;
-                        break;
-                    }
+                if (Arrays.asList(packageList.split(",")).contains(packageName)) {
+                    exposeMonoCamera = true;
                 }
-            } else if (packageBlacklist.length() > 0) {
-                TextUtils.StringSplitter splitter = new TextUtils.SimpleStringSplitter(',');
-                splitter.setString(packageBlacklist);
+            } else if (!packageBlacklist.isEmpty()) {
                 exposeMonoCamera = true;
-                for (String str : splitter) {
-                    if (packageName.equals(str)) {
-                        exposeMonoCamera = false;
-                        break;
-                    }
+                if (Arrays.asList(packageBlacklist.split(",")).contains(packageName)) {
+                    exposeMonoCamera = false;
                 }
             }
 

@@ -15,4 +15,51 @@
      the documentation output. To suppress comment lines from the documentation
      output, insert an eat-comment element after the comment lines.
 -->
-<resources></resources>
+<resources>
+    <!-- Header. -->
+    <string name="text_clock_header_one">Sono le</string>
+    <string name="text_clock_header_few">Sono le</string>
+    <string name="text_clock_header_multiple">Sono le</string>
+    <!-- Hours. -->
+    <string name="text_clock_hours_midnight">Mezzanotte</string>
+    <string name="text_clock_hours_one">Uno</string>
+    <string name="text_clock_hours_two">Due</string>
+    <string name="text_clock_hours_three">Tre</string>
+    <string name="text_clock_hours_four">Quattro</string>
+    <string name="text_clock_hours_five">Cinque</string>
+    <string name="text_clock_hours_six">Sei</string>
+    <string name="text_clock_hours_seven">Sette</string>
+    <string name="text_clock_hours_eight">Otto</string>
+    <string name="text_clock_hours_nine">Nove</string>
+    <string name="text_clock_hours_ten">Dieci</string>
+    <string name="text_clock_hours_eleven">Undici</string>
+    <string name="text_clock_hours_twelve">Dodici</string>
+    <string name="text_clock_hours_thirteen">Tredici</string>
+    <string name="text_clock_hours_fourteen">Quattordici</string>
+    <string name="text_clock_hours_fifteen">Quindici</string>
+    <string name="text_clock_hours_sixteen">Sedici</string>
+    <string name="text_clock_hours_seventeen">Diciassette</string>
+    <string name="text_clock_hours_eighteen">Diciotto</string>
+    <string name="text_clock_hours_nineteen">Diciannove</string>
+    <string name="text_clock_hours_twenty">Venti</string>
+    <string name="text_clock_hours_twentyone">Ventuno</string>
+    <string name="text_clock_hours_twentytwo">Ventidue</string>
+    <string name="text_clock_hours_twentythree">Ventitré</string>
+    <!-- Minutes. -->
+    <string name="text_clock_minutes_zero">In punto</string>
+    <string name="text_clock_minutes_one">Uno</string>
+    <string name="text_clock_minutes_two">Due</string>
+    <string name="text_clock_minutes_three">Tre</string>
+    <string name="text_clock_minutes_four">Quattro</string>
+    <string name="text_clock_minutes_five">Cinque</string>
+    <string name="text_clock_minutes_six">Sei</string>
+    <string name="text_clock_minutes_seven">Sette</string>
+    <string name="text_clock_minutes_eight">Otto</string>
+    <string name="text_clock_minutes_nine">Nove</string>
+    <string name="text_clock_minutes_ten">Dieci</string>
+    <string name="text_clock_minutes_eleven">Undici</string>
+    <string name="text_clock_minutes_twelve">Dodici</string>
+    <string name="text_clock_minutes_thirteen">Tredici</string>
+    <string name="text_clock_minutes_fourteen">Quattordici</string>
+    <string name="text_clock_minutes_fifteen">Quindici</string>
+</resources>

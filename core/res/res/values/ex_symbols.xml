@@ -53,15 +53,6 @@
 
     <java-symbol name="config_vendorPlatformSignatures" type="array" />
 
-    <!-- Proximity check on screen on -->
-    <java-symbol name="config_proximityCheckOnWake" type="bool" />
-
-    <!-- Proximity check timeout -->
-    <java-symbol name="config_proximityCheckTimeout" type="integer" />
-
-    <!-- Proximity check on screen on default -->
-    <java-symbol name="config_proximityCheckOnWakeEnabledByDefault" type="bool" />
-
     <!-- Home button wake -->
     <java-symbol name="config_HomeWakeButton" type="bool" />
 
@@ -313,4 +304,12 @@
    <java-symbol type="id" name="notification_media_elapsed_time" />
    <java-symbol type="id" name="notification_media_total_time" />
 
+    <!-- Pocket Lock -->
+    <java-symbol type="layout" name="pocket_lock_view_layout" />
+    <java-symbol type="id" name="pocket_hint_container" />
+    <java-symbol type="id" name="pocket_hint_image" />
+    <java-symbol type="id" name="pocket_hint_message" />
+
+    <!-- Pocket bridge -->
+    <java-symbol type="string" name="config_pocketBridgeSysfsInpocket" />
 </resources>
